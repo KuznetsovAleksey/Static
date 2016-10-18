@@ -282,4 +282,11 @@ extension DataSource: UITableViewDelegate {
             row.accessory.selection?()
         }
     }
+    
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if let row = row(at: indexPath) {
+            return row.height()
+        }
+        return tableView.rowHeight
+    }
 }

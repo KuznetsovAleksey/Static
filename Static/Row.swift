@@ -101,6 +101,9 @@ public struct Row: Hashable, Equatable {
 
     /// Image for the row
     public var image: UIImage?
+    
+    /// Height for the row
+    public var height: () -> CGFloat
 
     /// Action to run when the row is selected.
     public var selection: Selection?
@@ -133,14 +136,23 @@ public struct Row: Hashable, Equatable {
 
     // MARK: - Initializers
 
-    public init(text: String? = nil, detailText: String? = nil, selection: Selection? = nil,
-        image: UIImage? = nil, accessory: Accessory = .none, cellClass: Cell.Type? = nil, context: Context? = nil, editActions: [EditAction] = [], uuid: String = UUID().uuidString) {
+    public init(text: String? = nil,
+                detailText: String? = nil,
+                selection: Selection? = nil,
+                image: UIImage? = nil,
+                height: @escaping () -> CGFloat = { return UITableViewAutomaticDimension },
+                accessory: Accessory = .none,
+                cellClass: Cell.Type? = nil,
+                context: Context? = nil,
+                editActions: [EditAction] = [],
+                uuid: String = UUID().uuidString) {
         
         self.uuid = uuid
         self.text = text
         self.detailText = detailText
         self.selection = selection
         self.image = image
+        self.height = height
         self.accessory = accessory
         self.cellClass = cellClass ?? Value1Cell.self
         self.context = context
