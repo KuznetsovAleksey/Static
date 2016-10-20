@@ -72,6 +72,38 @@ public class DataSource: NSObject {
         guard let indexPath = tableView?.indexPathForRow(at: point) else { return nil }
         return row(at: indexPath)
     }
+    
+    /// Updates row at given `indexPath`
+    ///
+    /// - parameter indexPath:     The index path of updated row.
+    /// - parameter animated:  Flag to determine way of update.
+    /// - parameter updater:  Closure to update, which takes old row as parameter, returns row with updated state.
+    ///
+    public func updateRow(at indexPath: IndexPath,
+                          animated: Bool = false,
+                          updater: (Row) -> Row) {
+        
+        guard let row = self.row(at: indexPath) else {
+            return
+        }
+        
+        let newRow = updater(row)
+        guard var section = section(at: indexPath.section) else {
+            return
+        }
+        
+        section.rows[indexPath.row] = newRow
+        sections[indexPath.section] = section
+        
+        if !animated {
+            tableView?.reloadData()
+            return
+        }
+        
+        tableView?.beginUpdates()
+        tableView?.reloadRows(at: [indexPath], with: .automatic)
+        tableView?.endUpdates()
+    }
 
 
     // MARK: - Private
@@ -179,7 +211,8 @@ extension DataSource: UITableViewDataSource {
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let row = row(at: indexPath) {
-            let tableCell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier, for: indexPath)
+            
+            let tableCell = row.cellClass.instance()
 
             if let cell = tableCell as? Cell {
                 cell.configure(row: row)
@@ -288,5 +321,6 @@ extension DataSource: UITableViewDelegate {
             return row.height()
         }
         return tableView.rowHeight
+
     }
 }

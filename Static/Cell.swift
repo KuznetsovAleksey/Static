@@ -5,6 +5,7 @@ public protocol Cell: class {
     static func nib() -> UINib?
 
     func configure(row: Row)
+    static func instance() -> UITableViewCell
 }
 
 extension Cell {
