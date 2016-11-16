@@ -5,29 +5,29 @@ public typealias Selection = () -> Void
 
 /// Representation of a table row.
 public struct Row: Hashable, Equatable {
-
+    
     // MARK: - Types
-
+    
     /// Representation of a row accessory.
     public enum Accessory: Equatable {
         /// No accessory
         case none
-
+        
         /// Chevron
         case disclosureIndicator
-
+        
         /// Info button with chevron. Handles selection.
         case detailDisclosureButton(Selection)
-
+        
         /// Checkmark
         case checkmark
-
+        
         /// Info button. Handles selection.
         case detailButton(Selection)
-
+        
         /// Custom view
         case view(UIView)
-
+        
         /// Table view cell accessory type
         public var type: UITableViewCellAccessoryType {
             switch self {
@@ -38,7 +38,7 @@ public struct Row: Hashable, Equatable {
             default: return .none
             }
         }
-
+        
         /// Accessory view
         public var view: UIView? {
             switch self {
@@ -46,7 +46,7 @@ public struct Row: Hashable, Equatable {
             default: return nil
             }
         }
-
+        
         /// Selection block for accessory buttons
         public var selection: Selection? {
             switch self {
@@ -56,9 +56,9 @@ public struct Row: Hashable, Equatable {
             }
         }
     }
-
+    
     public typealias Context = [String: Any]
-
+    
     /// Representation of an editing action, when swiping to edit a cell.
     public struct EditAction {
         /// Title of the action's button.
@@ -84,58 +84,58 @@ public struct Row: Hashable, Equatable {
             self.selection = selection
         }
     }
-
+    
     // MARK: - Properties
-
+    
     /// Unique identifier for the row.
     public let uuid: String
-
+    
     /// The row's primary text.
     public var text: String?
-
+    
     /// The row's secondary text.
     public var detailText: String?
-
+    
     /// Accessory for the row.
     public var accessory: Accessory
-
+    
     /// Image for the row
     public var image: UIImage?
     
     /// Height for the row
     public var height: () -> CGFloat
-
+    
     /// Action to run when the row is selected.
     public var selection: Selection?
-
+    
     /// View to be used for the row.
     public var cellClass: Cell.Type
-
+    
     /// Additional information for the row.
     public var context: Context?
     
     /// Actions to show when swiping the cell, such as Delete.
     public var editActions: [EditAction]
-
+    
+    /// Reusable identifier for the row. Default value is `cellClass.description()`
+    public var cellIdentifier: String
+    
     var canEdit: Bool {
         return editActions.count > 0
     }
-
+    
     var isSelectable: Bool {
         return selection != nil
     }
-
-    var cellIdentifier: String {
-        return cellClass.description()
-    }
-
+    
+    
     public var hashValue: Int {
         return uuid.hashValue
     }
-
-
+    
+    
     // MARK: - Initializers
-
+    
     public init(text: String? = nil,
                 detailText: String? = nil,
                 selection: Selection? = nil,
@@ -157,6 +157,7 @@ public struct Row: Hashable, Equatable {
         self.cellClass = cellClass ?? Value1Cell.self
         self.context = context
         self.editActions = editActions
+        self.cellIdentifier = self.cellClass.description()
     }
 }
 
