@@ -133,6 +133,18 @@ public struct Row: Hashable, Equatable {
         return uuid.hashValue
     }
     
+    public mutating func addAdditionalPayload<T>(_ payloadObject: T) {
+        let key = String(describing: T.self)
+        if context == nil {
+            context = [:]
+        }
+        context?[key] = payloadObject
+    }
+    
+    public func fetchAdditionalPayload<T>() -> T? {
+        let key = String(describing: T.self)
+        return context?[key] as? T
+    }
     
     // MARK: - Initializers
     
