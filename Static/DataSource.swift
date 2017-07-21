@@ -115,6 +115,23 @@ public class DataSource: NSObject {
         tableView?.endUpdates()
     }
     
+    /// Updates all rows satisfying passed condition
+    ///
+    /// - parameter animated:  Flag to determine way of update.
+    /// - parameter filter:   Takes old row, returns flag which indicates that row should be udated or not
+    /// - parameter updater:  Closure to update, which takes old row as parameter, returns row with updated state.
+    ///
+    
+    public func updateRows(animated: Bool, filter: (Row) -> Bool, updater: (Row) -> Row) {
+        for (sectionIndex, section) in sections.enumerated() {
+            for (rowIndex, row) in section.rows.enumerated() {
+                if filter(row) {
+                    let indexPath = IndexPath(row: rowIndex, section: sectionIndex)
+                    updateRow(at: indexPath, animated: animated, updater: updater)
+                }
+            }
+        }
+    }
     
     // MARK: - Private
     
