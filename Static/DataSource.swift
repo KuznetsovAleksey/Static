@@ -68,6 +68,8 @@ public class DataSource: NSObject {
     
     public weak var scrollDelegate: UIScrollViewDelegate?
     
+    public var cellConfigurator: ((UITableViewCell?, IndexPath) -> Void)?
+    
     deinit {
         // nil out the table view to ensure the table view data source and delegate niled out
         tableView = nil
@@ -229,6 +231,8 @@ extension DataSource: UITableViewDataSource {
             if let cell = tableCell as? Cell {
                 cell.configure(row: row)
             }
+            
+            cellConfigurator?(tableCell, indexPath)
             
             return tableCell
         }
