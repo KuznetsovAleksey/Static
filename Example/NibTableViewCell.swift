@@ -2,6 +2,11 @@ import UIKit
 import Static
 
 final class NibTableViewCell: UITableViewCell, Cell {
+    
+    static func instance() -> UITableViewCell {
+        return Bundle.main.loadNibNamed(String(describing: self), owner: nil, options: nil)?.first as! NibTableViewCell
+    }
+
 
     // MARK: - Properties
 

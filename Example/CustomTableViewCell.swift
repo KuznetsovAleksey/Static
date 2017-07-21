@@ -3,6 +3,9 @@ import Static
 
 final class CustomTableViewCell: UITableViewCell, Cell {
 
+    static func instance() -> UITableViewCell {
+        return CustomTableViewCell(style: .default, reuseIdentifier: String(describing: CustomTableViewCell.self))
+    }
     // MARK: - Properties
 
     private lazy var centeredLabel: UILabel = {
