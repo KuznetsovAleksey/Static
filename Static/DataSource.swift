@@ -66,6 +66,8 @@ public class DataSource: NSObject {
         }
     }
     
+    public weak var scrollDelegate: UIScrollViewDelegate?
+    
     deinit {
         // nil out the table view to ensure the table view data source and delegate niled out
         tableView = nil
@@ -333,4 +335,22 @@ extension DataSource: UITableViewDelegate {
         return tableView.rowHeight
         
     }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollDelegate?.scrollViewDidScroll?(scrollView)
+    }
+    
+    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+       scrollDelegate?.scrollViewWillEndDragging?(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
+    }
+    
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        scrollDelegate?.scrollViewWillBeginDragging?(scrollView)
+    }
+    
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        scrollDelegate?.scrollViewDidEndDecelerating?(scrollView)
+    }
+
+
 }
